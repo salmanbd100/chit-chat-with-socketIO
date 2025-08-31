@@ -6,16 +6,36 @@ const socket = io.connect("http://localhost:3001");
 const ChatRoom = ({ username, room }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  console.log(username, room);
 
   useEffect(() => {
     socket.emit("join_room", room);
+
     socket.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
     });
+
+    return () => {
+      socket.off("receive_message");
+    };
   }, [room]);
 
-  const sendMessage = () => {};
+  console.log(messages);
+
+  const sendMessage = () => {
+    if (message.trim()) {
+      const messageData = {
+        room,
+        author: username,
+        message,
+        time: new Date().toLocaleDateString(),
+        id: crypto.randomUUID(),
+      };
+
+      socket.emit("send_message", messageData);
+      setMessages((prev) => [...prev, messageData]);
+      setMessage("");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">

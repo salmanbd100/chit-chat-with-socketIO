@@ -26,10 +26,12 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data);
+    console.log("received message", data);
   });
 
   socket.on("typing", (username, room) => {
     socket.to(room).emit("user_typing", username);
+    console.log(username, "is typing");
   });
 
   socket.on("disconnect", (username, room) => {
