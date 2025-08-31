@@ -18,94 +18,95 @@ const ChatRoom = ({ username, room }) => {
   const sendMessage = () => {};
 
   return (
-    <div className="flex flex-col h-screen max-w-4xl mx-auto bg-background">
-      <div className="flex items-center justify-between p-4 border-b border-border bg-card">
-        <div className="flex items-center gap-3">
-          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <div>
-            <h2 className="text-lg font-semibold text-card-foreground font-sans">
-              {room}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Connected as {username}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full">
-          <div className="w-2 h-2 bg-secondary rounded-full"></div>
-          <span className="text-sm text-secondary-foreground font-medium">
-            Online
-          </span>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/20">
-        {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <p className="text-muted-foreground text-lg font-medium">
-                No messages yet
-              </p>
-              <p className="text-muted-foreground text-sm">
-                Start the conversation by sending a message
-              </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl h-[600px] flex flex-col">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">{room}</h2>
+              <p className="text-sm text-gray-600">Connected as {username}</p>
             </div>
           </div>
-        ) : (
-          messages.map((msg, index) => (
-            <div
-              key={msg.id || index}
-              className={`flex ${
-                msg.author === username ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${
-                  msg.author === username
-                    ? "bg-primary text-primary-foreground rounded-br-md"
-                    : "bg-card text-card-foreground rounded-bl-md"
-                }`}
-              >
-                {msg.author !== username && (
-                  <div className="text-xs font-medium text-secondary mb-1">
-                    {msg.author}
-                  </div>
-                )}
-                <div className="text-sm leading-relaxed break-words">
-                  {msg.message}
-                </div>
-                {msg.time && (
-                  <div className="text-xs opacity-70 mt-1 text-right">
-                    {msg.time}
-                  </div>
-                )}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full">
+              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+              <span className="text-sm text-blue-700 font-medium">Online</span>
+            </div>
+            <button className="text-gray-500 hover:text-gray-700 font-medium text-sm transition-colors">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+          {messages.length === 0 ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <p className="text-gray-600 text-lg font-medium">
+                  No messages yet
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Start the conversation by sending a message
+                </p>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            messages.map((msg, index) => (
+              <div
+                key={msg.id || index}
+                className={`flex ${
+                  msg.author === username ? "justify-end" : "justify-start"
+                }`}
+              >
+                <div
+                  className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${
+                    msg.author === username
+                      ? "bg-blue-600 text-white rounded-br-md"
+                      : "bg-white text-gray-900 rounded-bl-md shadow-sm border border-gray-200"
+                  }`}
+                >
+                  {msg.author !== username && (
+                    <div className="text-xs font-medium text-blue-600 mb-1">
+                      {msg.author}
+                    </div>
+                  )}
+                  <div className="text-sm leading-relaxed break-words">
+                    {msg.message}
+                  </div>
+                  {msg.time && (
+                    <div className="text-xs opacity-70 mt-1 text-right">
+                      {msg.time}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
 
-      <div className="p-4 border-t border-border bg-background">
-        <div className="flex items-center gap-3 max-w-4xl mx-auto">
-          <div className="flex-1 relative">
-            <input
-              type="text"
-              value={message}
-              placeholder="Type your message..."
-              className="w-full px-4 py-3 pr-12 bg-input border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-foreground placeholder:text-muted-foreground transition-all duration-200"
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            />
+        <div className="p-6 border-t border-gray-200 bg-white rounded-b-2xl">
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={message}
+                placeholder="Type your message..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors placeholder-gray-400"
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              />
+            </div>
+            <button
+              onClick={sendMessage}
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              disabled={!message.trim()}
+            >
+              Send
+            </button>
           </div>
-          <button
-            onClick={sendMessage}
-            className="flex items-center justify-center w-12 h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!message.trim()}
-          >
-            Send
-          </button>
         </div>
       </div>
     </div>
